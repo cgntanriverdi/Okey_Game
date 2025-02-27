@@ -93,7 +93,24 @@ public class OkeyGame {
      * ones.
      */
     public void pickTileForComputer() {
-
+        /*
+        * author : Eren Gürbüz
+        * Date: 27.02.2025
+        */
+        boolean canChain = false;
+        String playerName = this.players[currentPlayerIndex].getName();
+        for ( Tile aTile : this.players[currentPlayerIndex].getTiles()) {
+            if  ( aTile.canFormChainWith(lastDiscardedTile)) {
+                canChain = true;
+                break;
+            }
+        }
+        if ( canChain ) {
+            System.out.println(playerName + " has picked the last discarded tile: " + getLastDiscardedTile());
+        }
+        else {
+            System.out.println(playerName + " has picked the top tile: " + getTopTile());
+        }
     }
 
     /*
@@ -103,7 +120,43 @@ public class OkeyGame {
      * the single tiles and tiles that contribute to the smallest chains.
      */
     public void discardTileForComputer() {
-
+        /*
+        * author : Eren Gürbüz
+        * Date: 27.02.2025
+        */
+        Player current = this.players[currentPlayerIndex];
+        Tile [] currentTiles = current.getTiles();
+        int index = 0 ;
+        int minChain = Integer.MAX_VALUE ;
+        Tile discardingTile = currentTiles[index];
+        boolean duplicated = false;
+        int possibleChainCount = 0 ;
+        
+        for ( int i = 0 ; i < currentTiles.length-1 ; i++) {
+            for ( int k = i + 1 ; k < currentTiles.length ; k++) {
+                possibleChainCount = 0 ;
+                if ( currentTiles[k].compareTo(currentTiles[i]) == 0) {
+                    duplicated = true;
+                    index = i ;
+                    discardingTile = currentTiles [index];
+                    break;
+                }
+                else if ( currentTiles[i].canFormChainWith(currentTiles[k])) {
+                    possibleChainCount++;
+                }
+                
+            }
+            if ( duplicated ) {
+                break;
+            }
+            if ( possibleChainCount < minChain) {
+                minChain = possibleChainCount;
+                index = i ;
+                discardingTile = currentTiles[index];
+            } 
+        }
+        System.out.println(current.getName() + " discarded: " + discardingTile);
+        this.lastDiscardedTile = current.getAndRemoveTile(index);
     }
 
     /*
