@@ -7,6 +7,8 @@ public class OkeyGame {
 
     int currentPlayerIndex = 0;
 
+    private int counter;
+
     public OkeyGame() {
         players = new Player[4];
     }
@@ -34,7 +36,7 @@ public class OkeyGame {
      */
     public void distributeTilesToPlayers() {// Assuming that the tiles array is shuffled, this method assigns the first
                                             // 15 tiles to player[0] and next 14 to player[1] and so on.
-        int counter = 0;// Counter represents the current index of tile array.
+        counter = 0; // Counter represents the current index of tile array.
         for (int i = 0; i < players.length; i++) {// Loop through each player.
             for (int j = 0; j < 14; j++) {// Loop through each tile.
                 players[i].addTile(tiles[counter]);
@@ -53,9 +55,22 @@ public class OkeyGame {
      * (this simulates picking up the tile discarded by the previous player)
      * it should return the toString method of the tile so that we can print what we
      * picked
+     * 
+     *  @author : Ali Çağan Tanrıverdi
+     *  Date : 28.02.2025
      */
-    public String getLastDiscardedTile() {
-        return null;
+    public String getLastDiscardedTile() 
+    {
+        if ( lastDiscardedTile != null )
+        {
+            players[currentPlayerIndex].addTile(lastDiscardedTile);
+            String pickedTile = lastDiscardedTile.toString();
+            lastDiscardedTile = null;
+            return pickedTile;
+        } else
+        {
+            return null;
+        }
     }
 
     /*
@@ -64,9 +79,24 @@ public class OkeyGame {
      * tile)
      * it should return the toString method of the tile so that we can print what we
      * picked
+     * 
+     *  @author : Ali Çağan Tanrıverdi
+     *  Date : 28.02.2025
      */
-    public String getTopTile() {
-        return null;
+    public String getTopTile() 
+    {
+        
+        if (counter < 112) 
+        {
+            Tile pickedTile = tiles[counter];
+            players[currentPlayerIndex].addTile(pickedTile);
+            counter++;
+            return pickedTile.toString();
+
+        } else 
+        {
+            return null;
+        }
     }
 
     /*
