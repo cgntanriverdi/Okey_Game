@@ -101,17 +101,30 @@ public class OkeyGame {
 
     /*
      * TODO: should randomly shuffle the tiles array before game starts
+     * @author: Ali Batu Sarıca
+     * Date: 01.03.2025
      */
-    public void shuffleTiles() {
-
+    public void shuffleTiles() 
+    {
+        Random random = new Random();
+        for(int i = tiles.length - 1; i > 0; i--)
+        {
+            int j = random.nextInt(i + 1);
+            Tile temp = tiles[i];
+            tiles[i] = tiles[j];
+            tiles[j] = temp;
+        }
     }
 
     /*
-     * TODO: check if game still continues, should return true if current player
+     *TODO: check if game still continues, should return true if current player
      * finished the game, use isWinningHand() method of Player to decide
+     * @author: Ali Batu Sarıca
+     * Date: 01.03.2025
      */
-    public boolean didGameFinish() {
-        return false;
+    public boolean didGameFinish() 
+    {
+        return players[currentPlayerIndex].isWinningHand();
     }
 
     /*
