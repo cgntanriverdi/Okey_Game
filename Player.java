@@ -44,18 +44,25 @@ public class Player {
         {
             System.out.println("Maximum tile limit reached, cannot add a new tile!");
         }
+        if(this.numberOfTiles == 0)
+        {
+            this.playerTiles[0] = t;
+        }
         else
         {
-            int i = this.numberOfTiles - 1;
-            while(i >= 0 && this.playerTiles[i].compareTo(t) > 0)
+            int index = 0;
+            while (index < this.numberOfTiles && this.playerTiles[index].compareTo(t) < 0) 
             {
-                this.playerTiles[i + 1] = this.playerTiles[i];
-                i--;
+                index++;
             }
 
-            this.playerTiles[i + 1] = t;
-            this.numberOfTiles++;
+            for (int i = this.numberOfTiles; i > index; i--) 
+            {
+                this.playerTiles[i] = this.playerTiles[i - 1];
+            }
+            this.playerTiles[index] = t;
         }
+        this.numberOfTiles++;
    }
 
     /*
@@ -66,20 +73,35 @@ public class Player {
      * @return
      */
     public boolean isWinningHand() {
-        int i = 0; int numberOfChains = 0;
-        while(i < this.numberOfTiles - 3)
+        int numberOfChains = 0;
+        boolean[] used = new boolean[this.numberOfTiles]; // To mark the used tiles
+        for(int i = 0; i < this.numberOfTiles; i++)
         {
-            if(this.playerTiles[i].compareTo(this.playerTiles[i + 1]) == 0 && this.playerTiles[i].compareTo(this.playerTiles[i + 2]) == 0 && this.playerTiles[i].compareTo(this.playerTiles[i + 3] == 0))
+            if(used[i] == false)
             {
-                numberOfChains++;
-                i += 4;
-            }
-            else
-            {
-                i++;
+                Tile[] chain = new Tile[4];
+                chain[0] = this.playerTiles[i];
+                int chainSize = 1;
+                for(int j = i + 1; j < this.numberOfTiles && chainSize < 4; j++)
+                {
+                    if(used[j] == false && this.playerTiles[j].canFormChainWith(chain[chainSize - 1]))
+                    {
+                        chain[chainSize] = this.playerTiles[j];
+                        used[j] = true;
+                        chainSize++;
+                    }
+                }
+                if(chainSize == 4)
+                {
+                    numberOfChains++;
+                    if(numberOfChains == 3)
+                    {
+                        return true;
+                    }
+                }
             }
         }
-        return numberOfChains >= 3;
+        return false;
     }
 
     public int findPositionOfTile(Tile t) {
