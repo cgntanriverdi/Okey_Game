@@ -126,15 +126,21 @@ public class ApplicationMain {
                     game.displayCurrentPlayersTiles();
                 }
 
-                // computer picks a tile from tile stack or other player's discard
-                game.pickTileForComputer();
-
-                if (game.didGameFinish()) 
+                if ( !firstTurn || currentPlayer != 0 )
                 {
-                    getWinnerorTie(game);
-                    gameContinues = false;
-                    break;
-                } 
+                    game.pickTileForComputer();
+                    if (game.didGameFinish()) 
+                    {
+                        getWinnerorTie(game);
+                        gameContinues = false;
+                        break;
+                    } 
+
+                } else
+                {
+                    System.out.println(game.getCurrentPlayerName() + " skips picking on first turn.");
+                    firstTurn = false;
+                }
 
                 if (gameContinues)
                 {
