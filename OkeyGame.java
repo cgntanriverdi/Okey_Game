@@ -124,7 +124,10 @@ public class OkeyGame {
      * Date: 01.03.2025
      */
     public boolean didGameFinish() 
-    {
+    {   
+        if ( this.counter == 112 ) {
+        return true; 
+        }
         return players[currentPlayerIndex].isWinningHand();
     }
 

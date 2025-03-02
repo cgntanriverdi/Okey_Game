@@ -181,7 +181,7 @@ public class ApplicationMain {
     {
         if (game.players[game.getCurrentPlayerIndex()].isWinningHand())
         {
-            System.out.println(game.getCurrentPlayerName() + "wins!");
+            System.out.println(game.getCurrentPlayerName() + " wins!");
             return true;
         } else
         {
