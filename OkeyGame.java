@@ -144,7 +144,7 @@ public class OkeyGame {
         boolean canChain = false;
         String playerName = this.players[currentPlayerIndex].getName();
         for ( Tile aTile : this.players[currentPlayerIndex].getTiles()) {
-            if  ( aTile.canFormChainWith(lastDiscardedTile)) {
+            if  ( aTile!= null && aTile.canFormChainWith(lastDiscardedTile)) {
                 canChain = true;
                 break;
             }
