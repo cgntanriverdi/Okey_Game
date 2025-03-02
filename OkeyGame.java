@@ -1,3 +1,4 @@
+import java.util.Random;
 public class OkeyGame {
 
     Player[] players;
@@ -175,9 +176,9 @@ public class OkeyGame {
         boolean duplicated = false;
         int possibleChainCount = 0 ;
         
-        for ( int i = 0 ; i < currentTiles.length-1 ; i++) {
-            for ( int k = i + 1 ; k < currentTiles.length ; k++) {
-                possibleChainCount = 0 ;
+        for ( int i = 0 ; i < current.numberOfTiles-1 ; i++) {
+            possibleChainCount = 0 ;
+            for ( int k = i + 1 ; k < current.numberOfTiles ; k++) {
                 if ( currentTiles[k].compareTo(currentTiles[i]) == 0) {
                     duplicated = true;
                     index = i ;
