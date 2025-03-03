@@ -138,18 +138,34 @@ public class OkeyGame {
      */
     public void pickTileForComputer() {
         /*
-         * author : Eren Gürbüz
-         * Date: 27.02.2025
-         */
+        * author : Eren Gürbüz
+        * Date: 27.02.2025
+        */
+        int count = 0 ;
         boolean canChain = false;
-        String playerName = this.players[currentPlayerIndex].getName();
-        for (Tile aTile : this.players[currentPlayerIndex].getTiles()) {
-            if (aTile != null && aTile.canFormChainWith(lastDiscardedTile)) {
-                canChain = true;
+        boolean isDuplciate = false; 
+        Player current = this.players[currentPlayerIndex];
+        Tile [] currentTiles = current.getTiles();
+        for ( Tile aTile : currentTiles) {
+            if ( aTile != null && aTile.getColor() == lastDiscardedTile.getColor() && aTile.getValue() == lastDiscardedTile.getValue())
+            {   
+                isDuplciate = true ; 
                 break;
             }
         }
-        if (canChain) {
+        if ( !isDuplciate) {
+            for ( Tile aTile : current.getTiles()) {
+                if  ( aTile!= null && aTile.canFormChainWith(lastDiscardedTile)) {
+                    count++;
+                    if ( count == 2) {
+                        canChain = true;
+                        break;
+                    } 
+                }
+            }
+        }
+        String playerName = this.players[currentPlayerIndex].getName();
+        if ( canChain ) {
             System.out.println(playerName + " has picked the last discarded tile: " + getLastDiscardedTile());
         } else {
             System.out.println(playerName + " has picked the top tile: " + getTopTile());
