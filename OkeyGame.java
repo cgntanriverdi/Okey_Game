@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class OkeyGame {
 
     Player[] players;
@@ -34,6 +35,9 @@ public class OkeyGame {
      * player at index 0 gets 15 tiles and starts first
      * other players get 14 tiles
      * this method assumes the tiles are already shuffled
+     * 
+     * @author : Fatih Ebrar İnan
+     * Date: 27.02.2025
      */
     public void distributeTilesToPlayers() {// Assuming that the tiles array is shuffled, this method assigns the first
                                             // 15 tiles to player[0] and next 14 to player[1] and so on.
@@ -57,19 +61,16 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we
      * picked
      * 
-     *  @author : Ali Çağan Tanrıverdi
-     *  Date : 28.02.2025
+     * @author : Ali Çağan Tanrıverdi
+     * Date : 28.02.2025
      */
-    public String getLastDiscardedTile() 
-    {
-        if ( lastDiscardedTile != null )
-        {
+    public String getLastDiscardedTile() {
+        if (lastDiscardedTile != null) {
             players[currentPlayerIndex].addTile(lastDiscardedTile);
             String pickedTile = lastDiscardedTile.toString();
             lastDiscardedTile = null;
             return pickedTile;
-        } else
-        {
+        } else {
             return null;
         }
     }
@@ -81,35 +82,31 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we
      * picked
      * 
-     *  @author : Ali Çağan Tanrıverdi
-     *  Date : 28.02.2025
+     * @author : Ali Çağan Tanrıverdi
+     * Date : 28.02.2025
      */
-    public String getTopTile() 
-    {
-        
-        if (counter < 112) 
-        {
+    public String getTopTile() {
+
+        if (counter < 112) {
             Tile pickedTile = tiles[counter];
             players[currentPlayerIndex].addTile(pickedTile);
             counter++;
             return pickedTile.toString();
 
-        } else 
-        {
+        } else {
             return null;
         }
     }
 
     /*
      * TODO: should randomly shuffle the tiles array before game starts
+     * 
      * @author: Ali Batu Sarıca
      * Date: 01.03.2025
      */
-    public void shuffleTiles() 
-    {
+    public void shuffleTiles() {
         Random random = new Random();
-        for(int i = tiles.length - 1; i > 0; i--)
-        {
+        for (int i = tiles.length - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);
             Tile temp = tiles[i];
             tiles[i] = tiles[j];
@@ -118,15 +115,15 @@ public class OkeyGame {
     }
 
     /*
-     *TODO: check if game still continues, should return true if current player
+     * TODO: check if game still continues, should return true if current player
      * finished the game, use isWinningHand() method of Player to decide
+     * 
      * @author: Ali Batu Sarıca
      * Date: 01.03.2025
      */
-    public boolean didGameFinish() 
-    {   
-        if ( this.counter == 112 ) {
-        return true; 
+    public boolean didGameFinish() {
+        if (this.counter == 112) {
+            return true;
         }
         return players[currentPlayerIndex].isWinningHand();
     }
@@ -141,21 +138,20 @@ public class OkeyGame {
      */
     public void pickTileForComputer() {
         /*
-        * author : Eren Gürbüz
-        * Date: 27.02.2025
-        */
+         * author : Eren Gürbüz
+         * Date: 27.02.2025
+         */
         boolean canChain = false;
         String playerName = this.players[currentPlayerIndex].getName();
-        for ( Tile aTile : this.players[currentPlayerIndex].getTiles()) {
-            if  ( aTile!= null && aTile.canFormChainWith(lastDiscardedTile)) {
+        for (Tile aTile : this.players[currentPlayerIndex].getTiles()) {
+            if (aTile != null && aTile.canFormChainWith(lastDiscardedTile)) {
                 canChain = true;
                 break;
             }
         }
-        if ( canChain ) {
+        if (canChain) {
             System.out.println(playerName + " has picked the last discarded tile: " + getLastDiscardedTile());
-        }
-        else {
+        } else {
             System.out.println(playerName + " has picked the top tile: " + getTopTile());
         }
     }
@@ -168,40 +164,39 @@ public class OkeyGame {
      */
     public void discardTileForComputer() {
         /*
-        * author : Eren Gürbüz
-        * Date: 27.02.2025
-        */
+         * author : Eren Gürbüz
+         * Date: 27.02.2025
+         */
         Player current = this.players[currentPlayerIndex];
-        Tile [] currentTiles = current.getTiles();
-        int index = 0 ;
-        int minChain = Integer.MAX_VALUE ;
+        Tile[] currentTiles = current.getTiles();
+        int index = 0;
+        int minChain = Integer.MAX_VALUE;
         Tile discardingTile = currentTiles[index];
         boolean duplicated = false;
-        int possibleChainCount = 0 ;
-        
-        for ( int i = 0 ; i < current.numberOfTiles-1 ; i++) {
-            possibleChainCount = 0 ;
-            for ( int k = i + 1 ; k < current.numberOfTiles ; k++) {
-                if ( currentTiles[k] != this.lastDiscardedTile) {
-                    if ( currentTiles[k].compareTo(currentTiles[i]) == 0) {
+        int possibleChainCount = 0;
+
+        for (int i = 0; i < current.numberOfTiles - 1; i++) {
+            possibleChainCount = 0;
+            for (int k = i + 1; k < current.numberOfTiles; k++) {
+                if (currentTiles[k] != this.lastDiscardedTile) {
+                    if (currentTiles[k].compareTo(currentTiles[i]) == 0) {
                         duplicated = true;
-                        index = i ;
-                        discardingTile = currentTiles [index];
+                        index = i;
+                        discardingTile = currentTiles[index];
                         break;
-                    }
-                    else if ( currentTiles[i].canFormChainWith(currentTiles[k])) {
+                    } else if (currentTiles[i].canFormChainWith(currentTiles[k])) {
                         possibleChainCount++;
                     }
                 }
             }
-            if ( duplicated ) {
+            if (duplicated) {
                 break;
             }
-            if ( possibleChainCount < minChain) {
+            if (possibleChainCount < minChain) {
                 minChain = possibleChainCount;
-                index = i ;
+                index = i;
                 discardingTile = currentTiles[index];
-            } 
+            }
         }
         System.out.println(current.getName() + " discarded: " + discardingTile);
         this.lastDiscardedTile = current.getAndRemoveTile(index);
@@ -211,6 +206,9 @@ public class OkeyGame {
      * TODO: discards the current player's tile at given index
      * this should set lastDiscardedTile variable and remove that tile from
      * that player's tiles
+     * 
+     * @author : Fatih Ebrar İnan
+     * Date: 27.02.2025
      */
     public void discardTile(int tileIndex) {// Discards tile for the user player. User's index is 0.
         // getAndRemoveTile removes the tile at index titleIndex and returns that tile,

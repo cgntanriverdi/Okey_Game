@@ -11,13 +11,11 @@ public class ApplicationMain {
 
         boolean humanPlayer = mode == 'H';
 
-        if ( humanPlayer)
-        {
+        if (humanPlayer) {
             System.out.print("Please enter your name: ");
             String playerName = sc.next();
-            game.setPlayerName(0, playerName);   
-        } else 
-        {
+            game.setPlayerName(0, playerName);
+        } else {
             game.setPlayerName(0, "Alice");
         }
 
@@ -51,8 +49,7 @@ public class ApplicationMain {
                 System.out.println("What will you do?");
                 int playerChoice;
 
-                if (!firstTurn) 
-                {
+                if (!firstTurn) {
                     // after the first turn, player may pick from tile stack or last player's
                     // discard
                     System.out.println("1. Pick From Tiles");
@@ -62,35 +59,28 @@ public class ApplicationMain {
                     // to check whether player choice is correct and act accordingly.
                     playerChoice = isChoiceValid(sc, 1, 2);
 
-                    if (playerChoice == 1)
-                    {
+                    if (playerChoice == 1) {
                         String pickedTile = game.getTopTile();
-                        
-                        if (pickedTile == null)
-                        {
+
+                        if (pickedTile == null) {
                             System.out.println("No tile picked: stack is empty");
-                        } else 
-                        {
+                        } else {
                             System.out.println("You picked up: " + pickedTile);
                         }
                         game.displayCurrentPlayersTiles();
-                    } else if ( playerChoice == 2)
-                    {
+                    } else if (playerChoice == 2) {
                         String pickedTile = game.getLastDiscardedTile();
-                        
-                        if ( pickedTile == null)
-                        {
+
+                        if (pickedTile == null) {
                             System.out.println("You picked nothing discard pile is empty!");
                             game.displayCurrentPlayersTiles();
-                        } else
-                        {
+                        } else {
                             System.out.println("You picked up: " + pickedTile);
                             game.displayCurrentPlayersTiles();
                         }
                     }
 
-                    if (game.didGameFinish())
-                    {
+                    if (game.didGameFinish()) {
                         getWinnerorTie(game);
                         gameContinues = false;
                         break;
@@ -105,8 +95,7 @@ public class ApplicationMain {
 
                 }
 
-                if (gameContinues) 
-                {
+                if (gameContinues) {
                     // if game continues we need to discard a tile using the given index by the
                     // player
                     System.out.println("Which tile you will discard?");
@@ -114,36 +103,32 @@ public class ApplicationMain {
                     playerChoice = isChoiceValid(sc, 0, game.players[0].numberOfTiles - 1);
 
                     // TODO: make sure the given index is correct, should be 0 <= index <= 14
-                    // fixed this issue by the helper method isChoiceValid @author : Ali Çağan Tanrıverdi | Date: 02.03.2025
+                    // fixed this issue by the helper method isChoiceValid @author : Ali Çağan
+                    // Tanrıverdi | Date: 02.03.2025
 
                     game.discardTile(playerChoice);
                     game.passTurnToNextPlayer();
-                } 
-            } else 
-            {
+                }
+            } else {
                 // this is the computer player's turn
                 if (devModeOn) {
                     game.displayCurrentPlayersTiles();
                 }
 
-                if ( !firstTurn || currentPlayer != 0 )
-                {
+                if (!firstTurn || currentPlayer != 0) {
                     game.pickTileForComputer();
-                    if (game.didGameFinish()) 
-                    {
+                    if (game.didGameFinish()) {
                         getWinnerorTie(game);
                         gameContinues = false;
                         break;
-                    } 
+                    }
 
-                } else
-                {
+                } else {
                     System.out.println(game.getCurrentPlayerName() + " skips picking on first turn.");
                     firstTurn = false;
                 }
 
-                if (gameContinues)
-                {
+                if (gameContinues) {
                     game.discardTileForComputer();
                     game.passTurnToNextPlayer();
                 }
@@ -152,19 +137,18 @@ public class ApplicationMain {
         sc.close();
     }
 
-    /* 
+    /*
      * checks whether the input is valid by comparing avaliable opitons
+     * 
      * @author : Ali Çağan Tanrıverdi
      * Date : 02.03.2025
-    */
-    private static int isChoiceValid(Scanner sc, int min , int max)
-    {
+     */
+    private static int isChoiceValid(Scanner sc, int min, int max) {
         int choice;
 
-        // keep prompting the user to input a valid choice 
-        while (!sc.hasNextInt() || (choice = sc.nextInt()) < min || choice > max)
-        {
-            System.out.println("Invalid choice. Please enter a number between " + min + " and " + max + " : " );
+        // keep prompting the user to input a valid choice
+        while (!sc.hasNextInt() || (choice = sc.nextInt()) < min || choice > max) {
+            System.out.println("Invalid choice. Please enter a number between " + min + " and " + max + " : ");
             sc.nextLine(); // clearing the invalid output
         }
         sc.nextLine(); // clearing line
@@ -174,32 +158,27 @@ public class ApplicationMain {
     /*
      * 
      * handles the end game logic
+     * 
      * @author : Ai Çağan Tanrıverdi
      * Date : 02.03.2025
      */
-    private static boolean getWinnerorTie(OkeyGame game)
-    {
-        if (game.players[game.getCurrentPlayerIndex()].isWinningHand())
-        {
+    private static boolean getWinnerorTie(OkeyGame game) {
+        if (game.players[game.getCurrentPlayerIndex()].isWinningHand()) {
             System.out.println(game.getCurrentPlayerName() + " wins!");
             return true;
-        } else
-        {
+        } else {
             System.out.println("The tile stack is empty!");
             boolean anyWinner = false;
 
-            for ( Player aPlayer : game.players)
-            {
-                if (aPlayer.isWinningHand())
-                {
+            for (Player aPlayer : game.players) {
+                if (aPlayer.isWinningHand()) {
                     System.out.println(aPlayer.getName() + " wins!");
                     anyWinner = true;
                     break;
                 }
             }
 
-            if (!anyWinner)
-            {
+            if (!anyWinner) {
                 System.out.println("Game ends in a tie...");
             }
         }

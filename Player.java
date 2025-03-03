@@ -17,18 +17,16 @@ public class Player {
      * TODO: removes and returns the tile in given index
      */
     public Tile getAndRemoveTile(int index) {
-        if(index < 0 || index >= this.numberOfTiles)
-        {
+        if (index < 0 || index >= this.numberOfTiles) {
             return null;
         }
         Tile willBeRemoved = this.playerTiles[index];
 
-        for(int i = index; i < this.numberOfTiles - 1; i++)
-        {
+        for (int i = index; i < this.numberOfTiles - 1; i++) {
             this.playerTiles[i] = this.playerTiles[i + 1];
         }
 
-        this.playerTiles[this.numberOfTiles - 1] = null; // Removing the last reference 
+        this.playerTiles[this.numberOfTiles - 1] = null; // Removing the last reference
         this.numberOfTiles--;
 
         return willBeRemoved;
@@ -40,30 +38,24 @@ public class Player {
      * make sure playerTiles are not more than 15 at any time
      */
     public void addTile(Tile t) {
-        if(this.numberOfTiles >= 15)
-        {
+        if (this.numberOfTiles >= 15) {
             System.out.println("Maximum tile limit reached, cannot add a new tile!");
         }
-        if(this.numberOfTiles == 0)
-        {
+        if (this.numberOfTiles == 0) {
             this.playerTiles[0] = t;
-        }
-        else
-        {
+        } else {
             int index = 0;
-            while (index < this.numberOfTiles && this.playerTiles[index].compareTo(t) < 0) 
-            {
+            while (index < this.numberOfTiles && this.playerTiles[index].compareTo(t) < 0) {
                 index++;
             }
 
-            for (int i = this.numberOfTiles; i > index; i--) 
-            {
+            for (int i = this.numberOfTiles; i > index; i--) {
                 this.playerTiles[i] = this.playerTiles[i - 1];
             }
             this.playerTiles[index] = t;
         }
         this.numberOfTiles++;
-   }
+    }
 
     /*
      * TODO: checks if this player's hand satisfies the winning condition
@@ -75,27 +67,21 @@ public class Player {
     public boolean isWinningHand() {
         int numberOfChains = 0;
         boolean[] used = new boolean[this.numberOfTiles]; // To mark the used tiles
-        for(int i = 0; i < this.numberOfTiles; i++)
-        {
-            if(used[i] == false)
-            {
+        for (int i = 0; i < this.numberOfTiles; i++) {
+            if (used[i] == false) {
                 Tile[] chain = new Tile[4];
                 chain[0] = this.playerTiles[i];
                 int chainSize = 1;
-                for(int j = i + 1; j < this.numberOfTiles && chainSize < 4; j++)
-                {
-                    if(used[j] == false && this.playerTiles[j].canFormChainWith(chain[chainSize - 1]))
-                    {
+                for (int j = i + 1; j < this.numberOfTiles && chainSize < 4; j++) {
+                    if (used[j] == false && this.playerTiles[j].canFormChainWith(chain[chainSize - 1])) {
                         chain[chainSize] = this.playerTiles[j];
                         used[j] = true;
                         chainSize++;
                     }
                 }
-                if(chainSize == 4)
-                {
+                if (chainSize == 4) {
                     numberOfChains++;
-                    if(numberOfChains == 3)
-                    {
+                    if (numberOfChains == 3) {
                         return true;
                     }
                 }

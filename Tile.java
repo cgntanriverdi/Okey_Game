@@ -1,5 +1,5 @@
 public class Tile {
-    
+
     int value;
     char color;
 
@@ -7,7 +7,8 @@ public class Tile {
      * Creates a tile using the given color and value, colors are represented
      * using the following letters: Y: Yellow, B: Blue, R: Red, K: Black
      * Values can be in the range [1,7]. There are four tiles of each color value
-     * combination (7 * 4 * 4) = 112 tiles, false jokers are not included in this game.
+     * combination (7 * 4 * 4) = 112 tiles, false jokers are not included in this
+     * game.
      */
     public Tile(int value, char color) {
         this.value = value;
@@ -18,36 +19,29 @@ public class Tile {
      * Compares tiles so that they can be added to the hands in order
      */
     public int compareTo(Tile t) {
-        if(colorNameToInt() < t.colorNameToInt()) {
+        if (colorNameToInt() < t.colorNameToInt()) {
             return -1;
-        }
-        else if(colorNameToInt() > t.colorNameToInt()) {
+        } else if (colorNameToInt() > t.colorNameToInt()) {
             return 1;
-        }
-        else{
-             if(getValue() < t.getValue()) {
+        } else {
+            if (getValue() < t.getValue()) {
                 return -1;
-            }
-            else if(getValue() > t.getValue()) {
+            } else if (getValue() > t.getValue()) {
                 return 1;
-            }
-            else{
+            } else {
                 return 0;
             }
         }
     }
 
     public int colorNameToInt() {
-        if(color == 'Y') {
+        if (color == 'Y') {
             return 0;
-        }
-        else if(color == 'B') {
+        } else if (color == 'B') {
             return 1;
-        }
-        else if(color == 'R') {
+        } else if (color == 'R') {
             return 2;
-        }
-        else {
+        } else {
             return 3;
         }
     }
@@ -56,7 +50,7 @@ public class Tile {
     public boolean canFormChainWith(Tile t) {
 
         // can make chain if same number but different color
-        if(t.getColor() != color && t.getValue() == value) {
+        if (t.getColor() != color && t.getValue() == value) {
             return true;
         } else {
             return false;
@@ -75,5 +69,5 @@ public class Tile {
     public char getColor() {
         return color;
     }
-    
+
 }
