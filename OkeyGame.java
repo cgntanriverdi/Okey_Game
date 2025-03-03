@@ -182,16 +182,17 @@ public class OkeyGame {
         for ( int i = 0 ; i < current.numberOfTiles-1 ; i++) {
             possibleChainCount = 0 ;
             for ( int k = i + 1 ; k < current.numberOfTiles ; k++) {
-                if ( currentTiles[k].compareTo(currentTiles[i]) == 0) {
-                    duplicated = true;
-                    index = i ;
-                    discardingTile = currentTiles [index];
-                    break;
+                if ( currentTiles[k] != this.lastDiscardedTile) {
+                    if ( currentTiles[k].compareTo(currentTiles[i]) == 0) {
+                        duplicated = true;
+                        index = i ;
+                        discardingTile = currentTiles [index];
+                        break;
+                    }
+                    else if ( currentTiles[i].canFormChainWith(currentTiles[k])) {
+                        possibleChainCount++;
+                    }
                 }
-                else if ( currentTiles[i].canFormChainWith(currentTiles[k])) {
-                    possibleChainCount++;
-                }
-                
             }
             if ( duplicated ) {
                 break;
